@@ -86,7 +86,7 @@ $ python manage.py runserver
 From another tab in the same directory:
 
 ```
-$ yarn serve
+$ yarn serve --port 8000
 ```
 
 The Vue application will be served from [`localhost:8080`](http://localhost:8080/) and the Django API
