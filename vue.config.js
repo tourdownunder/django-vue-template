@@ -3,6 +3,7 @@
 module.exports = {
     outputDir: 'dist',
     assetsDir: 'static',
+    // socialDir: 'social',
     // baseUrl: IS_PRODUCTION
     // ? 'http://cdn123.com'
     // : '/',
@@ -15,7 +16,11 @@ module.exports = {
         '/api*': {
           // Forward frontend dev server request for /api to django dev server
           target: 'http://localhost:8000/',
-        }
+        },
+        '/social*': {
+          // Forward frontend dev server request for /social to django dev server
+          target: 'http://localhost:8000/social',
+        },
       }
     }
   }

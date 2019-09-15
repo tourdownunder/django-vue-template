@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'backend.api',
+    'backend.music',
     'social_django',  # social-auth-app-django
 ]
 
