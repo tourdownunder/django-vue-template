@@ -9,5 +9,5 @@ class LoginSpotifyView(View):
     template_name = "login_spotify.html"
 
 
-class IndexView(View):
-    template_name = "index.html"
+# class IndexView(View):
+#     template_name = "index.html"

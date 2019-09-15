@@ -18,13 +18,12 @@ urlpatterns = [
     # http://localhost:8000/
     path('', index_view, name='index'),
 
-    # path("login/", include("backend.login.urls")),
-
     # http://localhost:8000/api/<router-viewsets>
     path('api/', include(router.urls)),
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
 
+    # python social auth
     url("", include("social_django.urls", namespace="social")),
 ]
