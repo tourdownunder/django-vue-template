@@ -15,6 +15,4 @@ urlpatterns = [
         views.LoginSpotifyView.as_view(), 
         name="login-spotify"
     ),
-
-    # url("", include("social_django.urls", namespace="social")),
 ]

@@ -147,7 +147,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # See https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
 # SOCIAL_AUTH_POSTGRES_JSONFIELD = True
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
+# SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
