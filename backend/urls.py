@@ -25,9 +25,9 @@ urlpatterns = [
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
 
-    # http://localhost:8000/login
+    # http://localhost:8000/login/
     path('login/', include(login_urls)),
 
     # python social auth
-    url("", include("social_django.urls", namespace="social")),
+    url("social/", include("social_django.urls", namespace="social")),
 ]
