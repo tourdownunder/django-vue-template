@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'backend.api',
+    'backend.music',
+    'social_django',  # social-auth-app-django
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,113 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # Insert Whitenoise Middleware at top but below Security Middleware
 # MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware',)
 # http://whitenoise.evans.io/en/stable/django.html#make-sure-staticfiles-is-configured-correctly
+
+
+# See https://python-social-auth.readthedocs.io/en/latest/configuration/django.html
+# SOCIAL_AUTH_POSTGRES_JSONFIELD = True
+
+
+AUTHENTICATION_BACKENDS = (
+    "social_core.backends.google.GoogleOAuth2",
+    "social_core.backends.spotify.SpotifyOAuth2",
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.musicbrainz.MusicBrainzOAuth2",
+)
+
+SOCIAL_AUTH_STRATEGY = "social_django.strategy.DjangoStrategy"
+SOCIAL_AUTH_STORAGE = "social_django.models.DjangoStorage"
+# SOCIAL_AUTH_STORAGE = 'app.models.CustomDjangoStorage'
+
+# musicbrainz
+SOCIAL_AUTH_MUSICBRAINZ_KEY = os.environ.get("SOCIAL_AUTH_MUSICBRAINZ_KEY", None)
+if not SOCIAL_AUTH_MUSICBRAINZ_KEY:
+    SOCIAL_AUTH_MUSICBRAINZ_KEY = input("SOCIAL_AUTH_MUSICBRAINZ_KEY:")
+
+SOCIAL_AUTH_MUSICBRAINZ_SECRET = os.environ.get("SOCIAL_AUTH_MUSICBRAINZ_SECRET", None)
+
+# spotify
+SOCIAL_AUTH_SPOTIFY_KEY = os.environ.get("SOCIAL_AUTH_SPOTIFY_KEY", None)
+if not SOCIAL_AUTH_SPOTIFY_KEY:
+    SOCIAL_AUTH_SPOTIFY_KEY = input("SOCIAL_AUTH_SPOTIFY_KEY:")
+
+SOCIAL_AUTH_SPOTIFY_SECRET = os.environ.get("SOCIAL_AUTH_SPOTIFY_SECRET", None)
+
+if not SOCIAL_AUTH_SPOTIFY_SECRET:
+    SOCIAL_AUTH_SPOTIFY_SECRET = input("SOCIAL_AUTH_SPOTIFY_SECRET:")
+
+LOGIN_URL = "/login-musicbrainz"
+LOGIN_REDIRECT_URL = "/"
+
+
+SOCIAL_AUTH_PIPELINE = (
+    "social_core.pipeline.social_auth.social_details",
+    "social_core.pipeline.social_auth.social_uid",
+    "social_core.pipeline.social_auth.auth_allowed",
+    "social_core.pipeline.social_auth.social_user",
+    "social_core.pipeline.user.get_username",
+    "social_core.pipeline.user.create_user",
+    # "musicbrainz.pipelines.save_profile",  # <--- set the path to the function
+    "social_core.pipeline.social_auth.associate_user",
+    "social_core.pipeline.social_auth.load_extra_data",
+    "social_core.pipeline.user.user_details",
+)
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "null": {
+            # Null logger
+            "level": "DEBUG",
+            "class": "logging.NullHandler",
+        },
+        "SysLog": {
+            # Syslog system logging endpoint, if you want to view messages
+            # via mac log viewer etc.
+            "level": "DEBUG",
+            "formatter": "simple",
+            "class": "logging.handlers.SysLogHandler",
+            "facility": "local0",
+        },
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "debug.log",
+            "formatter": "verbose",
+        },
+    },
+    "formatters": {
+        "verbose": {
+            "format": "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)s] %(message)s\n"
+        },
+        "simple": {"format": "%(levelname)s %(message)s"},
+    },
+    "loggers": {
+        "": {
+            # Root logger.  All loggers will bubble up to this level
+            "handlers": ["console"],
+            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
+        },
+        "django.db.backends": {
+            # Quieten down the SQL noise, allows us to leave the root
+            # logger in DEBUG.
+            "handlers": ["null"],  # Quiet by default!
+            "propagate": False,
+            "level": "WARN",
+        },
+        "factory": {"handlers": ["console"], "propagate": False, "level": "INFO"},
+        "requests": {"handlers": ["console"], "level": "DEBUG", "propagate": True},
+        "requests.packages.urllib3.connectionpool": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": True,
+        },
+        "social_core": {"handlers": ["console"], "level": "DEBUG", "propagate": True},
+    },
+}

@@ -7,11 +7,14 @@ name = "pypi"
 django = "*"
 djangorestframework = "*"
 gunicorn = "*"
-whitenoise = "==4.0"
+whitenoise = "*"
 dj-database-url = "*"
 psycopg2-binary = "*"
-
-[dev-packages]
+social-auth-app-django = "*"
+social-auth-core = {path = "./../social-core"}
 
 [requires]
-python_version = "3.6"
+python_version = "3.7"
+
+[dev-packages]
+black = "==19.3b0"

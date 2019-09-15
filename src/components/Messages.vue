@@ -15,7 +15,7 @@
       :disabled="!subject || !msgBody">
 
     <hr/>
-    <h3>Messages on Database</h3>
+    <h3>Messages on Databases</h3>
     <p v-if="messages.length === 0">No Messages</p>
     <div class="msg" v-for="(msg, index) in messages" :key="index">
         <p class="msg-index">[{{index}}]</p>

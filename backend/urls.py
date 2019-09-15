@@ -3,7 +3,7 @@
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.1/topics/http/urls/
 """
-
+from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
@@ -23,6 +23,7 @@ urlpatterns = [
 
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
+
+    # python social auth
+    url("social/", include("social_django.urls", namespace="social")),
 ]
-
-
